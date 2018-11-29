@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtGUI import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize
 
 
 class CellButton(QPushButton):
-    def __init__(self, y, x):
-        super.__init__()
+    def __init__(self, y, x, parent=None):
+        super(CellButton, self).__init__(parent)
         self.y_pos = y
         self.x_pos = x
         self.setStyleSheet('background-color:green')
@@ -17,3 +17,4 @@ class CellButton(QPushButton):
         pixmap = QPixmap(path)
         self.setIconSize(QSize(pixmap.width(), pixmap.height()))
         self.setIcon(QIcon(pixmap))
+        self.resize(pixmap.width(), pixmap.height())
