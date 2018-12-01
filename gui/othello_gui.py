@@ -5,18 +5,28 @@ from PyQt5.QtWidgets import QTextEdit, QLineEdit, QToolButton, QLabel, QPushButt
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
 
-class Button(QToolButton):
-
-    def __init__(self, text):
-        super().__init__()
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+class CellButton(QPushButton):
+    def __init__(self, y, x, text, parent=None):
+        super(CellButton, self).__init__(parent)
+        self.y_pos = y
+        self.x_pos = x
         self.setText(text)
-
-    def sizeHint(self):
-        size = super(Button, self).sizeHint()
-        size.setHeight(size.height() + 70)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        size = super(CellButton, self).sizeHint()
+        size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
-        return size
+
+    def getPos(self):
+        return (self.y_pos, self.x_pos)
+
+    def setImage(self, path):
+        pixmap = QPixmap(path)
+        self.setIconSize(QSize(pixmap.width(), pixmap.height()))
+        self.setIcon(QIcon(pixmap))
+        self.resize(pixmap.width(), pixmap.height())
+
+    def setColor(self):
+        self.setStyleSheet('background-color:green')
 
 class Othello(QWidget):
     def __init__(self, parent=None):
@@ -24,28 +34,26 @@ class Othello(QWidget):
         #Othello Layout
         othelloLayout = QGridLayout()
         white_cell = QPixmap('white_cell.PNG')
-        black_cell = QIcon('black_cell.PNG')
-
-        self.button = [x for x in range(100)]
+        black_cell = QPixmap('black_cell.PNG')
         for i in range(9):
-            for k in range(9):
-                if (i == 0) and (k == 0):
-                    self.button[i] = Button("")
-                    othelloLayout.addWidget(self.button[k], i, k)
-                elif (i == 0) and (k != 0):
-                    self.button[k] = Button(chr(ord('a') + k - 1))
-                    othelloLayout.addWidget(self.button[k], i, k)
-                elif (i != 0) and (k == 0):
-                    self.button[int(str(i)+str(k))] = Button(str(i))
-                    othelloLayout.addWidget(self.button[int(str(i)+str(k))], i, k)
-                else:
-                    self.button[int(str(i) + str(k))] = Button("")
-                    self.button[int(str(i) + str(k))].setStyleSheet("background-color:green")
-                    othelloLayout.addWidget(self.button[int(str(i)+str(k))], i, k)
-                    if (i == k == 3) or (i == k == 4):
-                        self.button[int(str(i) + str(k))].setIcon(QIcon('white_cell.PNG'))
-                    elif (i == 3 and k == 4) or (i == 4 and k == 3):
-                        self.button[int(str(i) + str(k))].setIcon(black_cell)
+            if i == 0:
+                self.button = CellButton(0, 0, "")
+            else:
+                self.button = CellButton(i, 0, chr(ord('a') + i - 1))
+            othelloLayout.addWidget(self.button, 0, i)
+        for i in range(10, 89):
+            if (i % 10 == 0):
+                self.button = CellButton(i % 10, i // 10, str(i // 10))
+                othelloLayout.addWidget(self.button, self.button.getPos()[1], self.button.getPos()[0])
+            else:
+                if i % 10 != 9:
+                    self.button = CellButton(i % 10, i // 10, "")
+                    self.button.setColor()
+                    othelloLayout.addWidget(self.button, self.button.getPos()[1], self.button.getPos()[0])
+                    if self.button.getPos() == (4, 4) or self.button.getPos() == (5, 5):
+                        self.button.setImage(white_cell)
+                    elif self.button.getPos() == (4, 5) or self.button.getPos() == (5, 4):
+                        self.button.setImage(black_cell)
 
         #Status Layout
         statusLayout = QGridLayout()
