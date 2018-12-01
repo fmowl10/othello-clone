@@ -100,32 +100,33 @@ class Board:
         else:
             self.black_point.append((y, x))
         self.board[y][x].status = self.turn
-        self.placed_able = []
         for i, delta in enumerate(self.board[y][x].direction):
-            y_i, x_i = (y, x)
+            y_i, x_i = y, x
             postion = self.go(y_i, x_i, delta)
-            (y_i, x_i) = postion
+            y_i, x_i = postion
             while (self.is_in(postion) and
                     self.board[y_i][x_i].status != self.turn):
-                y_i, x_i = postion
                 if self.turn == Status.WHITE:
                     self.reverse(y_i, x_i, self.black_point, self.white_point)
                 else:
                     self.reverse(y_i, x_i, self.white_point, self.black_point)
                 postion = self.go(y_i, x_i, delta)
+                y_i, x_i = postion
+
         self.board[y][x].direction = [Direction.NONE]
         self.__clean_placed_able()
         return 'right'
 
     def reverse(self, y, x, delete, add):
         self.board[y][x].status = self.turn
+        self.board[y][x].direction = [Direction.NONE]
         delete.remove((y, x))
         add.append((y, x))
 
     def is_in(self, postion):
-        if -1 > postion[0] or 8 < postion[0]:
+        if -1 > postion[0] or 7 < postion[0]:
             return False
-        if -1 > postion[1] or 8 < postion[1]:
+        if -1 > postion[1] or 7 < postion[1]:
             return False
         return True
 
@@ -156,7 +157,7 @@ class Board:
             x_d = -1
         x = x + x_d
         y = y + y_d
-        return (y, x)
+        return y, x
 
     def __clean_placed_able(self):
         for i, v in enumerate(self.board):
@@ -197,6 +198,8 @@ class Board:
                 if v_i[0] == -1:
                     continue
                 self.board[v_i[0]][v_i[1]].status = Status.PLACED_ABLE
+                if self.board[v_i[0]][v_i[1]].direction[0] == Direction.NONE:
+                    self.board[v_i[0]][v_i[1]].direction == []
                 self.board[v_i[0]][v_i[1]].direction.append(v_i[2])
                 self.placed_able.append((v_i[0], v_i[1]))
 
@@ -208,20 +211,22 @@ class Board:
 
         while self.is_in((y_i, x_i)):
             # out out range
-            if self.board[y_i][x_i].status == Status.NONE:
+            none = self.board[y_i][x_i].status == Status.NONE
+            place_able = self.board[y_i][x_i].status == Status.PLACED_ABLE
+            if none or place_able:
                 if count == 0:
-                    return (-1, -1, Direction.NONE)
+                    return -1, -1, Direction.NONE
                 else:
                     print(delta, file=self.f)
-                    return (y_i, x_i, Direction(
+                    return y_i, x_i, Direction(
                         (delta + 4) % 8 if delta != Direction.SE else delta + 4
                         )
-                    )
+
             if self.board[y_i][x_i].status == self.turn:
-                return (-1, -1, Direction.NONE)
+                return -1, -1, Direction.NONE
             y_i, x_i = self.go(y_i, x_i, delta)
             count += 1
-        return (-1, -1, Direction.NONE)
+        return -1, -1, Direction.NONE
 
     def __place_cell(self, cell, point, point_list):
         self.board[point[0]][point[1]] = cell

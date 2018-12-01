@@ -1,5 +1,6 @@
 import curses
 from board import Board
+from enums import Status
 # check ~/test_mouse.py
 
 
@@ -26,6 +27,7 @@ def main_game():
             if event == curses.KEY_MOUSE:
                 _, mx, my, _, _ = curses.getmouse()
                 if 14 <= mx <= 16 and my == 8:
+                    print(board, file=board.f)
                     curses.endwin()
                     board.f.close()
                     break
@@ -47,6 +49,15 @@ def main_game():
                         board.next_turn()
                         stdscr.addstr(
                             9, 14, str(board.turn), curses.color_pair(1))
+                    if output == 'game over':
+                        winner = ''
+                        if board.who_win == Status.WHITE:
+                            winner = 'White'
+                        else:
+                            winner = 'Black'
+                        stdscr.addstr(
+                            9, 14, winner, curses.color_pair(1)
+                        )
                     stdscr.refresh()
                     win.refresh()
             for i in range(9):
