@@ -13,6 +13,12 @@ class CellButton(QPushButton):
     def getPos(self):
         return (self.y_pos, self.x_pos)
 
+    def sizeHine(self):
+        size = super(CellButton, self).sizeHint()
+        size.setWidth(71)
+        size.setHeight(max(size.width(), size.height()))
+        return size
+
     def setImage(self, path):
         pixmap = QPixmap(path)
         self.setIconSize(QSize(pixmap.width(), pixmap.height()))
