@@ -4,13 +4,14 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QSizePolicy
 
 
-
 class CellButton(QPushButton):
-    def __init__(self, y, x, parent=None):
+    def __init__(self, y, x, slot, text='', parent=None):
         super(CellButton, self).__init__(parent)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.y_pos = y
         self.x_pos = x
+        self.setText(text)
+        self.clicked.connect(slot)
         self.setStyleSheet('background-color:green')
 
     def getPos(self):
