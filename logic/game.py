@@ -45,11 +45,11 @@ def main_game():
                     stdscr.addstr(
                         22, 20, output, curses.color_pair(1)
                     )
-                    if output in ['pass', 'right']:
-                        board.next_turn()
+                    is_over = board.next_turn()
+                    if output in ['pass', 'right'] and not is_over:
                         stdscr.addstr(
                             9, 14, str(board.turn), curses.color_pair(1))
-                    if output == 'game over':
+                    if output == 'game over' or is_over:
                         winner = ''
                         if board.who_win == Status.WHITE:
                             winner = 'White'
