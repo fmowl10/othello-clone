@@ -1,5 +1,5 @@
-from cell import Cell
-from enums import Status, Direction
+from logic.cell import Cell
+from logic.enums import Status, Direction
 
 
 class Board:
@@ -22,6 +22,22 @@ class Board:
         self.who_win = Status.NONE
         self.turn = Status.BLACK
 
+    def get_who_win(self):
+        return self.who_win
+
+    def get_turn(self):
+        return self.turn
+
+    def get_is_over(self):
+        return self.is_over
+
+    def get_is_pass(self):
+        return self.is_pass
+
+    def get_placed_able_next(self):
+        for x in self.placed_able:
+            yield x
+
     def start_game(self):
         self.board = []
         self.black_point = []
@@ -43,42 +59,42 @@ class Board:
 
         # set cells
         self.__place_cell(
-            Cell(Status.BLACK, [Direction.NONE]),
+            Cell(Status.WHITE, [Direction.NONE]),
             (self.size // 2 - 1, self.size // 2 - 1),
-            self.black_point)
+            self.white_point)
         self.__place_cell(
-            Cell(Status.WHITE, [Direction.NONE]),
+            Cell(Status.BLACK, [Direction.NONE]),
             (self.size // 2 - 1, self.size // 2),
-            self.white_point)
-
-        self.__place_cell(
-            Cell(Status.WHITE, [Direction.NONE]),
-            (self.size // 2, self.size // 2 - 1),
-            self.white_point)
+            self.black_point)
 
         self.__place_cell(
             Cell(Status.BLACK, [Direction.NONE]),
-            (self.size // 2, self.size // 2),
+            (self.size // 2, self.size // 2 - 1),
             self.black_point)
+
+        self.__place_cell(
+            Cell(Status.WHITE, [Direction.NONE]),
+            (self.size // 2, self.size // 2),
+            self.white_point)
 
         self.__place_cell(
             Cell(Status.PLACED_ABLE, [Direction.N]),
-            (self.size // 2 + 1, self.size // 2 - 1),
+            (self.size // 2, self.size // 2 + 1),
             self.placed_able)
         self.__place_cell(
             Cell(Status.PLACED_ABLE, [Direction.E]),
-            (self.size // 2, self.size // 2 - 2),
+            (self.size // 2 + 1, self.size // 2),
             self.placed_able)
 
         self.__place_cell(
             Cell(Status.PLACED_ABLE, [Direction.S]),
-            (self.size // 2 - 2, self.size // 2),
+            (self.size // 2 - 2, self.size // 2 - 1),
             self.placed_able
         )
 
         self.__place_cell(
             Cell(Status.PLACED_ABLE, [Direction.W]),
-            (self.size // 2 - 1, self.size // 2 + 1),
+            (self.size // 2 - 1, self.size // 2 - 2),
             self.placed_able
         )
         self.is_over = not len(self.placed_able)
@@ -124,9 +140,9 @@ class Board:
         add.append((y, x))
 
     def is_in(self, postion):
-        if -1 > postion[0] or 7 < postion[0]:
+        if -1 > postion[0] or self.size - 1 < postion[0]:
             return False
-        if -1 > postion[1] or 7 < postion[1]:
+        if -1 > postion[1] or self.size - 1 < postion[1]:
             return False
         return True
 
@@ -204,6 +220,18 @@ class Board:
                 self.placed_able.append((v_i[0], v_i[1]))
 
         self.placed_able = list(set(self.placed_able))
+        if not self.place_cell:
+            if self.is_pass:
+                self.is_over = True
+                self.who_win = Status.BLACK if (
+                                len(self.black_point) > len(self.white_point)
+                                )else Status.WHITE
+                return True
+            self.is_pass = True
+        else:
+            self.is_pass = False
+
+        return False
 
     def search(self, y, x, delta):
         y_i, x_i = self.go(y, x, delta)

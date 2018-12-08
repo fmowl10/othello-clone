@@ -1,6 +1,6 @@
 import curses
-from board import Board
-from enums import Status
+from logic.board import Board
+from logic.enums import Status
 # check ~/test_mouse.py
 
 
