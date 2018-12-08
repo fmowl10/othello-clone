@@ -78,11 +78,11 @@ class Board:
             self.white_point)
 
         self.__place_cell(
-            Cell(Status.PLACED_ABLE, [Direction.N]),
+            Cell(Status.PLACED_ABLE, [Direction.W]),
             (self.size // 2, self.size // 2 + 1),
             self.placed_able)
         self.__place_cell(
-            Cell(Status.PLACED_ABLE, [Direction.E]),
+            Cell(Status.PLACED_ABLE, [Direction.N]),
             (self.size // 2 + 1, self.size // 2),
             self.placed_able)
 
@@ -93,7 +93,7 @@ class Board:
         )
 
         self.__place_cell(
-            Cell(Status.PLACED_ABLE, [Direction.W]),
+            Cell(Status.PLACED_ABLE, [Direction.E]),
             (self.size // 2 - 1, self.size // 2 - 2),
             self.placed_able
         )
