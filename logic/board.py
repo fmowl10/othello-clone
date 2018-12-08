@@ -221,7 +221,7 @@ class Board:
                 self.placed_able.append((v_i[0], v_i[1]))
 
         self.placed_able = list(set(self.placed_able))
-        if not self.place_cell:
+        if not self.placed_able:
             if self.is_pass:
                 self.is_over = True
                 self.who_win = Status.BLACK if (
