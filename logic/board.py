@@ -111,6 +111,7 @@ class Board:
         print('white', self.white_point, file=self.f)
         print('placed-able', self.placed_able, file=self.f)
         print('board\n', str(self), file=self.f)
+        self.placed_able.remove((y, x))
         if self.turn == Status.WHITE:
             self.white_point.append((y, x))
         else:
@@ -130,7 +131,6 @@ class Board:
                 y_i, x_i = postion
 
         self.board[y][x].direction = [Direction.NONE]
-        self.__clean_placed_able()
         return 'right'
 
     def reverse(self, y, x, delete, add):
@@ -140,9 +140,9 @@ class Board:
         add.append((y, x))
 
     def is_in(self, postion):
-        if -1 > postion[0] or self.size - 1 < postion[0]:
+        if not (-1 < postion[0] < self.size):
             return False
-        if -1 > postion[1] or self.size - 1 < postion[1]:
+        if not (-1 < postion[1] < self.size):
             return False
         return True
 
@@ -186,6 +186,7 @@ class Board:
     def next_turn(self):
         # wired placed_able
         # black_point, white_point
+        self.__clean_placed_able()
         if self.size ** 2 == len(self.black_point) + len(self.white_point):
             self.is_over = True
             self.who_win = Status.BLACK if (
@@ -247,7 +248,7 @@ class Board:
                 else:
                     print(delta, file=self.f)
                     return y_i, x_i, Direction(
-                        (delta + 4) % 8 if delta != Direction.SE else delta + 4
+                        (delta.value + 4) % 8 if delta != Direction.SE else delta.value + 4
                         )
 
             if self.board[y_i][x_i].status == self.turn:
