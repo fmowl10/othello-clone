@@ -26,8 +26,6 @@ class CellButton(QPushButton):
         pixmap = QPixmap(path)
         self.setIconSize(QSize(pixmap.width(), pixmap.height()))
         self.setIcon(QIcon(pixmap))
-        self.setContentsMargins(0,0,0,0)
-        self.resize(80, 80)
 
     def setColor(self):
         self.setStyleSheet('background-color:green')

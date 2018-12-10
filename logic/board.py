@@ -3,11 +3,10 @@ from logic.enums import Status, Direction
 
 
 class Board:
-    '''
+    """
         the board of othello
-    '''
+    """
     def __init__(self, size):
-        self.f = open('./log', 'w')
         if size < 4:
             return
         if size % 2:
@@ -105,12 +104,7 @@ class Board:
         if self.is_over:
             return 'game over'
         if (y, x) not in self.placed_able:
-            return str(self.placed_able) + 'wrong postion'
-        print('turn', self.turn, file=self.f)
-        print('black', self.black_point, file=self.f)
-        print('white', self.white_point, file=self.f)
-        print('placed-able', self.placed_able, file=self.f)
-        print('board\n', str(self), file=self.f)
+            return 'wrong postion'
         self.placed_able.remove((y, x))
         if self.turn == Status.WHITE:
             self.white_point.append((y, x))
@@ -216,7 +210,7 @@ class Board:
                     continue
                 self.board[v_i[0]][v_i[1]].status = Status.PLACED_ABLE
                 if self.board[v_i[0]][v_i[1]].direction[0] == Direction.NONE:
-                    self.board[v_i[0]][v_i[1]].direction == []
+                    self.board[v_i[0]][v_i[1]].direction = []
                 self.board[v_i[0]][v_i[1]].direction.append(v_i[2])
                 self.placed_able.append((v_i[0], v_i[1]))
 
@@ -246,7 +240,6 @@ class Board:
                 if count == 0:
                     return -1, -1, Direction.NONE
                 else:
-                    print(delta, file=self.f)
                     return y_i, x_i, Direction(
                         (delta.value + 4) % 8 if delta != Direction.SE else delta.value + 4
                         )
