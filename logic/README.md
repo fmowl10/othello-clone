@@ -11,8 +11,52 @@ Logic packages
 1. [Board](#Board)
 ### Board
 ___
+## attribute
+* [size](#size)
+* [board](#board)
+* [black_point](#black_point)
+* [white_point](#white_point)
+* [placed_able](#placed_able)
+* [is_over](#is_over)
+* [is_pass](#is_pass)
+* [who_win](#who_win)
+* [turn](#turn)
+---
+
+#### size
+게임판의 크기
+___
+#### board
+게임판
+____
+#### black_point
+검정말들의 위치 정보들
+___
+#### white_point
+흰말의 위치 정보들
+___
+#### placed_able
+현재 턴에서 말을 둘 수 있는 위치 정보들
+___
+#### is_over
+게임이 끝났는가를 저장
+___
+#### is_pass
+현재 턴에서 말을 둘 수 없는 경우
+___
+#### who_win
+게임이 끝나고 누가 이겼는지를 저장
+___
+#### turn
+누구의 턴인지 저장
+___
 methods
 * [생성자](#Board-생성자)
+* [get_who_win](#get_who_win)
+* [get_turn](#get_turn)
+* [get_is_over](#get_is_over)
+* [get_is_pass](#get_is_pass)
+* [get_placed_able_next](#get_placed_able_next)
 * [start_game](#start_game)
 * [place_cell](#place_cell)
 * [reverse](#reverse)
@@ -26,6 +70,21 @@ methods
 #### Board-생성자  
 Board(size)
 보드의 크기를 받고 인스턴스를 반환합니다.
+___
+#### get_who_win
+[who_win](#who_win)을 가져오는 메소드
+___
+#### get_turn
+[turn](#turn)을 가져오는 메소드
+___
+#### get_is_over
+[is_over](#is_over)을 가져오는 메소드
+___
+#### get_is_pass
+[is_pass](#is_pass)을 가져오는 메소드
+___
+#### get_placed_able_next
+[placed_able](#placed_able)을 갸져오는 제너레이
 ___
 #### start_game  
 게임을 시작하기 위해보드를 생성하고 초기값들을 설정합니다. 아무런 값을 반환하지 않습니다.
@@ -110,8 +169,22 @@ ___
 1. [cell](#cell)
 ___
 ### cell
+attribute
+* [status](#status)
+* [direction](#direction)
+___
+#### status
+위치에 말이 있거나 놓을 수 있거나 등의 정보를 담고있다.  
+see also [Status](#Status)  
+___
+#### direction
+현재 위치로 어떤 방향으로 가야지 돌을 뒤집을 수 있는 지 알려주는 ***리스트***  
+see also [Direction](#Direction)  
+___
+method
 * [생성자](#생성자-cell)
 * [__str__](#__str__cell)
+* [__eq__](#___eq___cell)
 ___
 #### 생성자-cell
     * parameter : 말색
@@ -119,6 +192,9 @@ ___
 ___
 #### __str__cell
 이것 또한 시각화를 위한 반환
+___
+#### __eq__cell
+== 오버 라이딩
 ___
 ## enums
 1. [Status](#Status)
