@@ -13,5 +13,5 @@ class PositionGenerator:
         :return: (y, x)
         """
         for i in range(0, len(self.positions), 2):
-            temp = (int(self.positions[i+1]) - 1, ord(self.positions[i]) - 65)
+            temp = (int(self.positions[i+1]) - 1, ord(self.positions[i]) - ord('A'))
             yield temp

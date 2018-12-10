@@ -104,7 +104,7 @@ class Board:
         if self.is_over:
             return 'game over'
         if (y, x) not in self.placed_able:
-            return 'wrong postion'
+            return 'wrong position'
         self.placed_able.remove((y, x))
         if self.turn == Status.WHITE:
             self.white_point.append((y, x))

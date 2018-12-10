@@ -28,7 +28,7 @@ class Othello(QWidget):
 
         for i in range(10, 89):
             if i % 10 == 0:
-                self.button = CellButton(i % 10, i // 10, self.buttonClicked, chr(ord('a') + i // 10 - 1))
+                self.button = CellButton(i % 10, i // 10, self.buttonClicked, chr(ord('A') + i // 10 - 1))
                 self.othelloLayout.addWidget(self.button, self.button.getPos()[0], self.button.getPos()[1])
             else:
                 if i % 10 != 9:
@@ -36,57 +36,59 @@ class Othello(QWidget):
                     self.button.setColor()
                     self.othelloLayout.addWidget(self.button, self.button.getPos()[0], self.button.getPos()[1])
 
-        #Status Layout
-        statusLayout = QGridLayout()
+        # Status Layout
+        statusLayout = QVBoxLayout()
+        newGameLayout = QHBoxLayout()
 
-        #Button for starting a new game
+        # Button for starting a new game
         self.newGameButton = QToolButton()
         self.newGameButton.setText('New Game')
+        self.newGameButton.setStyleSheet('font-size: 20px;')
         self.newGameButton.clicked.connect(self.showMessageBox)
-        statusLayout.addWidget(self.newGameButton, 1, 0)
+        newGameLayout.addWidget(self.newGameButton, 0)
 
-        #Display widget for current player
+        # Display widget for current player
+        currentPlayerLayout = QHBoxLayout()
         self.label1 = QLabel("Current Player : ")
-        statusLayout.addWidget(self.label1, 3, 0)
-        self.currentPlayer = QLineEdit()
-        self.currentPlayer.setReadOnly(True)
-        self.currentPlayer.setAlignment(Qt.AlignLeft)
-        statusLayout.addWidget(self.currentPlayer, 3, 1)
+        self.label1.setStyleSheet('font-size: 20px;')
+        currentPlayerLayout.addWidget(self.label1, 0)
+        self.currentPlayer = QLabel()
+        self.currentPlayer.setPixmap(self.black_cell)
+        currentPlayerLayout.addWidget(self.currentPlayer, 0)
 
-        #Display widget for Player1's cells
-        self.label2 = QLabel("White : ")
-        statusLayout.addWidget(self.label2, 2, 0)
-        self.playerW = QLineEdit()
-        self.playerW.setReadOnly(True)
-        self.playerW.setAlignment(Qt.AlignLeft)
-        statusLayout.addWidget(self.playerW, 2, 1,)
+        # Display widget for Player1's cells
+        numCellLayout = QHBoxLayout()
+        self.playerW = QLabel("White : 2")
+        self.playerW.setStyleSheet('font-size: 20px;')
+        numCellLayout.addWidget(self.playerW, 0)
+
+        numCellLayout.addStretch(1)
 
         #Display widget for Player2's cells
-        self.label3 = QLabel("Black : ")
-        statusLayout.addWidget(self.label3, 2, 2)
-        self.playerB = QLineEdit()
-        self.playerB.setReadOnly(True)
-        self.playerB.setAlignment(Qt.AlignLeft)
-        statusLayout.addWidget(self.playerB, 2, 3,)
+        self.playerB = QLabel("Black : 2")
+        self.playerB.setStyleSheet('font-size: 20px;')
+        numCellLayout.addWidget(self.playerB, 0)
 
-        #Display widget for winner
-        self.label4 = QLabel("Winner : ")
-        statusLayout.addWidget(self.label4, 4, 0)
-        self.showWinner = QLineEdit()
-        self.showWinner.setReadOnly(True)
-        self.showWinner.setAlignment(Qt.AlignLeft)
-        statusLayout.addWidget(self.showWinner, 4, 1)
+        # Display widget for winner
+        winnerLayout = QHBoxLayout()
+        self.showWinnerlable = QLabel("Winner: ")
+        self.showWinnerlable.setStyleSheet('font-size: 20px;')
+        winnerLayout.addWidget(self.showWinnerlable)
+        self.showWinner = QLabel()
+        self.resize(80, 80)
+        self.showWinner.setPixmap(self.place_able)
+        winnerLayout.addWidget(self.showWinner, 0)
 
-        #Display widget for message
-        self.message = QLineEdit()
-        self.message.setReadOnly(True)
-        statusLayout.addWidget(self.message, 5, 0, 1, 2)
+        statusLayout.addLayout(currentPlayerLayout)
+        statusLayout.addLayout(winnerLayout)
+        statusLayout.addLayout(numCellLayout)
+        statusLayout.addLayout(newGameLayout)
+
 
         #Layout placement
-        mainLayout = QGridLayout()
-        mainLayout.setSizeConstraint(QLayout.SetFixedSize)
-        mainLayout.addLayout(self.othelloLayout, 0, 0)
-        mainLayout.addLayout(statusLayout, 1, 0)
+        mainLayout = QHBoxLayout()
+        mainLayout.addLayout(self.othelloLayout)
+        mainLayout.addLayout(statusLayout)
 
         self.setLayout(mainLayout)
 
@@ -102,52 +104,60 @@ class Othello(QWidget):
             self.startGame()
 
     def startGame(self):
-        #self.board = Board()
         self.gameOver = False
         self.showWinner.clear()
-        self.currentPlayer.setText("BLACK")
+        self.currentPlayer.setPixmap(self.black_cell)
+        self.showWinner.setPixmap(self.place_able)
         for _, i in enumerate(self.board.white_point):
             self.othelloLayout.itemAtPosition(i[0] + 1, i[1] + 1).widget().setImage(None)
-            self.playerW.clear()
+            self.playerW.setText("White: 2")
         for _, k in enumerate(self.board.black_point):
             self.othelloLayout.itemAtPosition(k[0] + 1, k[1] + 1).widget().setImage(None)
-            self.playerB.clear()
+            self.playerB.setText("Black: 2")
         for _, j in enumerate(self.board.placed_able):
             self.othelloLayout.itemAtPosition(j[0] + 1, j[1] + 1).widget().setImage(None)
-        self.othelloLayout.itemAtPosition(4, 4).widget().setImage(self.white_cell)
-        self.othelloLayout.itemAtPosition(5, 5).widget().setImage(self.white_cell)
-        self.othelloLayout.itemAtPosition(4, 5).widget().setImage(self.black_cell)
-        self.othelloLayout.itemAtPosition(5, 4).widget().setImage(self.black_cell)
-        self.othelloLayout.itemAtPosition(4, 3).widget().setImage(self.place_able)
-        self.othelloLayout.itemAtPosition(3, 4).widget().setImage(self.place_able)
-        self.othelloLayout.itemAtPosition(5, 6).widget().setImage(self.place_able)
-        self.othelloLayout.itemAtPosition(6, 5).widget().setImage(self.place_able)
         self.board.start_game()
+        for _, i in enumerate(self.board.white_point):
+            self.othelloLayout.itemAtPosition(i[0] + 1, i[1] + 1).widget().setImage(self.white_cell)
+        for _, k in enumerate(self.board.black_point):
+            self.othelloLayout.itemAtPosition(k[0] + 1, k[1] + 1).widget().setImage(self.black_cell)
+        for _, j in enumerate(self.board.placed_able):
+            self.othelloLayout.itemAtPosition(j[0] + 1, j[1] + 1).widget().setImage(self.place_able)
 
     def buttonClicked(self):
         button = self.sender()
         pos = button.getPos()
         output = self.board.place_cell(pos[0] - 1, pos[1] - 1)
         # Show message when the player places on the wrong position
-        if 'wrong postion' in output:
-            self.message.setText("You can only place your cell on one of the X's")
+        if 'wrong position' == output:
+            QMessageBox.warning(self, "Warning", "you can't placed that position")
         if output == 'right':
-            self.message.clear()
+            if len(self.board.black_point) > len(self.board.white_point):
+                self.playerB.setStyleSheet('font-size: 30px')
+                self.playerW.setStyleSheet('font-size: 20px')
+            elif len(self.board.black_point) == len(self.board.white_point):
+                self.playerB.setStyleSheet('font-size: 20px')
+                self.playerW.setStyleSheet('font-size: 20px')
+            else:
+                self.playerW.setStyleSheet('font-size: 30px')
+                self.playerB.setStyleSheet('font-size: 20px')
+
             if isinstance(button, CellButton):
                 # Place cells according to the player's button click
                 for _, i in enumerate(self.board.white_point):
                     self.othelloLayout.itemAtPosition(i[0] + 1, i[1] + 1).widget().setImage(self.white_cell)
-                    self.playerW.setText(str(len(self.board.white_point)))
+                    self.playerW.setText('White: ' + str(len(self.board.white_point)))
                 for _, k in enumerate(self.board.black_point):
                     self.othelloLayout.itemAtPosition(k[0] + 1, k[1] + 1).widget().setImage(self.black_cell)
-                    self.playerB.setText(str(len(self.board.black_point)))
-                #Clear X's
+                    self.playerB.setText('Black: ' + str(len(self.board.black_point)))
+                # Clear X's
                 for _, j in enumerate(self.board.placed_able):
                     self.othelloLayout.itemAtPosition(j[0] + 1, j[1] + 1).widget().setImage(None)
 
             self.board.next_turn()
             # Check if the game is over
             if self.board.is_over:
+                self.showWinner.setPixmap(self.black_cell if self.board.get_who_win() == Status.BLACK else self.white_cell)
                 result = QMessageBox.warning(
                     self,
                     'game over',
@@ -155,9 +165,6 @@ class Othello(QWidget):
                     QMessageBox.Yes | QMessageBox.No)
                 if result == QMessageBox.Yes:
                     self.startGame()
-                self.showWinner.setText('BLACK' if self.board.who_win == Status.BLACK else 'WHITE')
-                self.message.setText('Game Over')
-                self.gameOver = True
             # Check if there is nowhere to place next cell for the current player
             if self.board.is_pass:
                 if QMessageBox.warning(
@@ -167,17 +174,23 @@ class Othello(QWidget):
                     QMessageBox.Yes
                 ) == QMessageBox.Yes:
 
-                    self.message.setText("You cannot place your cell at this turn")
                     self.board.next_turn()
                 if self.board.is_over:
-                    self.showWinner.setText('BLACK' if self.board.who_win == Status.BLACK else 'WHITE')
-                    self.message.setText('Game Over')
-                    self.gameOver = True
+                    self.showWinner.setPixmap(self.black_cell if self.board.get_who_win() == Status.BLACK else self.white_cell)
+                    result = QMessageBox.warning(
+                        self,
+                        'game over',
+                        "You Win " +
+                            ('Black' if self.board.get_who_win() == Status.BLACK else 'White') + " One more game?",
+                        QMessageBox.Yes | QMessageBox.No)
+
+                    if result == QMessageBox.Yes:
+                        self.startGame()
             # Place X's for the next player
             for _, i in enumerate(self.board.placed_able):
                 self.othelloLayout.itemAtPosition(i[0] + 1, i[1] + 1).widget().setImage(self.place_able)
             # Display current player
-            self.currentPlayer.setText('BLACK' if self.board.turn == Status.BLACK else 'WHITE')
+        self.currentPlayer.setPixmap(self.black_cell if self.board.get_turn() == Status.BLACK else self.white_cell)
 
 
 if __name__ == "__main__":
