@@ -128,6 +128,9 @@ class Othello(QWidget):
         button = self.sender()
         pos = button.getPos()
         output = self.board.place_cell(pos[0] - 1, pos[1] - 1)
+        # Show message when the player places on the wrong position
+        if 'wrong postion' in output:
+            self.message.setText("You can only place your cell on one of the X's")
         if output == 'right':
             self.message.clear()
             if isinstance(button, CellButton):
