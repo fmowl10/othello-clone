@@ -1,6 +1,8 @@
 import curses
+
 from logic.board import Board
 from logic.enums import Status
+
 # check ~/test_mouse.py
 
 
@@ -49,7 +51,9 @@ def main_game():
                     if output in ['pass', 'right'] and not is_over:
                         stdscr.addstr(
                             9, 14, str(board.turn), curses.color_pair(1))
-                    if output == 'game over' or is_over:
+                        if board.get_is_pass():
+                            board.next_turn()
+                    if output == 'game over' or board.is_over:
                         winner = ''
                         if board.who_win == Status.WHITE:
                             winner = 'White'
