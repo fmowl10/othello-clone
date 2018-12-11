@@ -111,9 +111,11 @@ class Othello(QWidget):
         for _, i in enumerate(self.board.white_point):
             self.othelloLayout.itemAtPosition(i[0] + 1, i[1] + 1).widget().setImage(None)
             self.playerW.setText("White: 2")
+            self.playerW.setStyleSheet('font-size: 20px;')
         for _, k in enumerate(self.board.black_point):
             self.othelloLayout.itemAtPosition(k[0] + 1, k[1] + 1).widget().setImage(None)
             self.playerB.setText("Black: 2")
+            self.playerB.setStyleSheet('font-size: 20px;')
         for _, j in enumerate(self.board.placed_able):
             self.othelloLayout.itemAtPosition(j[0] + 1, j[1] + 1).widget().setImage(None)
         self.board.start_game()
