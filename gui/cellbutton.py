@@ -1,7 +1,6 @@
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QPushButton, QSizePolicy
 
 
 class CellButton(QPushButton):

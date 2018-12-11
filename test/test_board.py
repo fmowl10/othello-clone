@@ -1,8 +1,9 @@
 import unittest
-from logic.board import Board
-from logic.enums import Status, Direction
-from logic.cell import Cell
 from test.placed_cell import PositionGenerator
+
+from logic.board import Board
+from logic.cell import Cell
+from logic.enums import Direction, Status
 
 
 class TestBoard(unittest.TestCase):
@@ -78,4 +79,3 @@ class TestBoard(unittest.TestCase):
         self.g1.next_turn()
         self.assertTrue(self.g1.get_is_over(), True)
         self.assertEqual(self.g1.get_who_win(), Status.WHITE)
-

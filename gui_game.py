@@ -1,8 +1,6 @@
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
-                             QLayout, QLineEdit, QMessageBox, QToolButton,
-                             QVBoxLayout, QWidget)
+                             QMessageBox, QToolButton, QVBoxLayout, QWidget)
 
 from gui.cellbutton import CellButton
 from logic.board import Board

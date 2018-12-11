@@ -1,6 +1,7 @@
 import unittest
+
 from logic.cell import Cell
-from logic.enums import Status, Direction
+from logic.enums import Direction, Status
 
 
 class TestCell(unittest.TestCase):
