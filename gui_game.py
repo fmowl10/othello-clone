@@ -130,7 +130,7 @@ class Othello(QWidget):
         output = self.board.place_cell(pos[0] - 1, pos[1] - 1)
         # Show message when the player places on the wrong position
         if 'wrong position' == output:
-            QMessageBox.warning(self, "Warning", "you can't placed that position")
+            QMessageBox.warning(self, "Warning", "you can't place on that position")
         if output == 'right':
             if len(self.board.black_point) > len(self.board.white_point):
                 self.playerB.setStyleSheet('font-size: 30px')
