@@ -1,4 +1,4 @@
-from enums import Status
+from .enums import Status
 
 
 class Cell:
@@ -15,3 +15,10 @@ class Cell:
             return ' '
         elif self.status == Status.PLACED_ABLE:
             return 'X'
+
+    def __eq__(self, object):
+        if isinstance(object, self.__class__):
+            if object.status == self.status and object.direction == self.direction:
+                return True
+            else:
+                return False

@@ -1,5 +1,8 @@
 import curses
-from board import Board
+
+from logic.board import Board
+from logic.enums import Status
+
 # check ~/test_mouse.py
 
 
@@ -27,7 +30,6 @@ def main_game():
                 _, mx, my, _, _ = curses.getmouse()
                 if 14 <= mx <= 16 and my == 8:
                     curses.endwin()
-                    board.f.close()
                     break
                 stdscr.clear()
                 stdscr.border()
@@ -43,10 +45,21 @@ def main_game():
                     stdscr.addstr(
                         22, 20, output, curses.color_pair(1)
                     )
-                    if output in ['pass', 'right']:
-                        board.next_turn()
+                    is_over = board.next_turn()
+                    if output in ['pass', 'right'] and not is_over:
                         stdscr.addstr(
                             9, 14, str(board.turn), curses.color_pair(1))
+                        if board.get_is_pass():
+                            board.next_turn()
+                    if output == 'game over' or board.is_over:
+                        winner = ''
+                        if board.who_win == Status.WHITE:
+                            winner = 'White'
+                        else:
+                            winner = 'Black'
+                        stdscr.addstr(
+                            9, 14, winner, curses.color_pair(1)
+                        )
                     stdscr.refresh()
                     win.refresh()
             for i in range(9):
@@ -61,9 +74,7 @@ def main_game():
                 win.refresh()
     except Exception as e:
         raise e
-        print(e, file=board.f)
     finally:
-        board.f.close()
         curses.endwin()
 
 
