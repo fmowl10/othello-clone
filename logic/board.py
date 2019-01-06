@@ -1,5 +1,5 @@
-from logic.cell import Cell
-from logic.enums import Direction, Status
+from .cell import Cell
+from .enums import Direction, Status
 
 
 class Board:

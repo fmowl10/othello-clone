@@ -1,4 +1,4 @@
-from logic.enums import Status
+from .enums import Status
 
 
 class Cell:

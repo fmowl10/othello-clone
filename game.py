@@ -29,9 +29,7 @@ def main_game():
             if event == curses.KEY_MOUSE:
                 _, mx, my, _, _ = curses.getmouse()
                 if 14 <= mx <= 16 and my == 8:
-                    print(board, file=board.f)
                     curses.endwin()
-                    board.f.close()
                     break
                 stdscr.clear()
                 stdscr.border()
@@ -76,9 +74,7 @@ def main_game():
                 win.refresh()
     except Exception as e:
         raise e
-        print(e, file=board.f)
     finally:
-        board.f.close()
         curses.endwin()
 
 

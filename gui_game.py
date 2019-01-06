@@ -10,13 +10,13 @@ from logic.enums import Status
 class Othello(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        #Othello Layout
+        # Othello Layout
         self.board = Board(8)
         self.othelloLayout = QGridLayout()
         self.white_cell = QPixmap('gui/white_cell.png')
         self.black_cell = QPixmap('gui/black_cell.png')
         self.place_able = QPixmap('gui/pointer.png')
-        #Add buttons
+        # Add buttons
         for i in range(9):
             if i == 0:
                 self.button = CellButton(0, 0, self.buttonClicked)
@@ -83,7 +83,7 @@ class Othello(QWidget):
         statusLayout.addLayout(newGameLayout)
 
 
-        #Layout placement
+        # Layout placement
         mainLayout = QHBoxLayout()
         mainLayout.addLayout(self.othelloLayout)
         mainLayout.addLayout(statusLayout)
@@ -94,7 +94,7 @@ class Othello(QWidget):
 
         self.startGame()
 
-    #Message Box for starting a new game
+    # Message Box for starting a new game
     def showMessageBox(self):
         self.msgBox = QMessageBox()
         reply = self.msgBox.question(self,'Game Start', 'Are you sure you want to start a new game?', self.msgBox.Yes | self.msgBox.No)
